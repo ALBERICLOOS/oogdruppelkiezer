@@ -13,7 +13,6 @@ function handleAnswer(jsonArray, currentQuestionIndex, vervolg, antwoord) {
 
     //add the antwoord to the answers
     answers[currentQuestionIndex-1] = antwoord;
-    console.log(answers)
 
     var newQuestionIndex;
 

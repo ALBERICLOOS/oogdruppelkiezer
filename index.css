@@ -1,9 +1,30 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+#container{
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+}
+
 div{
     text-align: center;
 }
 
 h1{
     font-size: 40px;
+    max-width: 100%;
 }
 
 li {
@@ -60,14 +81,12 @@ button:active {
     opacity: .5;
 }
 
-/* Center container using flexbox */
-.center-container {
-    display: flex;
-    justify-content: center; /* Horizontally center the child elements */
-    align-items: center; /* Vertically center the child elements */
-  }
+
   
   .custom-paragraph {
-    width: 400px; /* Set your desired width here */
+    max-width: 400px; /* Set your desired width here */
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
   }
   
