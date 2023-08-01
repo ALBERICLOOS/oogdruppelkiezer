@@ -5,11 +5,15 @@ var answers = [];
 var selections = [];
 var kiezer;
 
+// hou voor elke vraag bij wat de vorige vraag is
+var vorigeVragenNummers = [];
+
 // Function to handle the answer and process the next question
 function handleAnswer(jsonArray, currentQuestionIndex, vervolg, antwoord) {
 
     //add the antwoord to the answers
     answers[currentQuestionIndex-1] = antwoord;
+    console.log(answers)
 
     var newQuestionIndex;
 
@@ -38,32 +42,31 @@ function handleAnswer(jsonArray, currentQuestionIndex, vervolg, antwoord) {
 
               else{ // TODO KLAAR
                 if(replaced == 'klaar'){
-                    klaar(jsonArray);
+                    klaar();
                 }
                 else{
                     showText(eval(replaced))
-                    const container = document.getElementById('questions-container');
-                    const terugNaarStartKnop = document.createElement("button");
-                    terugNaarStartKnop.textContent = "Terug naar start";
-                    container.appendChild(terugNaarStartKnop)
-                    terugNaarStartKnop.addEventListener('click', () =>{
-                        const startPage = document.getElementById("startPage");
-                        const questionPage = document.getElementById("questions-container");
-                        startPage.style.display = "block";
-                        questionPage.style.display = "none";
-                        answers = [];
-                        selections = [];
-                    })
+                    addTerugNaarStartKnop();
                 }
               }
         }
     }
-    catch(error){ // dit wordt er gebruikt als we niet helemaal tot het einde van de vragenlijst moeten gaan
+    catch(error){ // dit is voor als er iets fout is gelopen.
         showText("Er is iets foutgelopen, gelieve de pagina te herladen.")
      }
 }
 
-function klaar(jsonArray){
+function updateVragenNummers(nummer){
+    // add the number of the question
+    if (!vorigeVragenNummers.includes(nummer)){
+        vorigeVragenNummers.push(nummer);
+    }
+    else{
+        vorigeVragenNummers.pop();
+    }
+}
+
+function klaar(){
     const scores = new Object();
     const naamToElement = new Object();
     kiezer.forEach(element=>{
@@ -114,29 +117,29 @@ function klaar(jsonArray){
         container.appendChild(infoList);
         }
 
-    const terugNaarStartKnop = document.createElement("button");
-    terugNaarStartKnop.textContent = "Terug naar start";
-    container.appendChild(terugNaarStartKnop)
-    terugNaarStartKnop.addEventListener('click', () =>{
-        const startPage = document.getElementById("startPage");
-        const questionPage = document.getElementById("questions-container");
-        startPage.style.display = "block";
-        questionPage.style.display = "none";
-        answers = [];
-        jsonArray.forEach(element=>{
-            if(element.vraag){
-                answers.push('nee');
-            }
-        })
-        selections = [];
-        console.log(answers);
-        console.log(selections);
-    })
-    
+    addTerugNaarStartKnop();
 }
 
+function addTerugNaarStartKnop() {
+    const container = document.getElementById('questions-container');
+    const terugNaarStartKnop = document.createElement("button");
+    terugNaarStartKnop.textContent = "Terug naar start";
+    container.appendChild(terugNaarStartKnop);
+  
+    terugNaarStartKnop.addEventListener('click', () => {
+      const startPage = document.getElementById("startPage");
+      const questionPage = document.getElementById("questions-container");
+      startPage.style.display = "block";
+      questionPage.style.display = "none";
+      answers = [];
+      selections = [];
+      vorigeVragenNummers = [];
+    });
+  }
+  
 
-// Function for when you are done filling out the form
+
+// toont text in h1 formaat en verwijdert al de rest. 
 function showText(text){
     const container = document.getElementById('questions-container');
     container.innerHTML = ''; // Clear previous content
@@ -151,7 +154,7 @@ function displayQuestionAnswers(jsonArray, currentQuestionIndex) {
     const container = document.getElementById('questions-container');
     container.innerHTML = ''; // Clear previous content
 
-    // Get the current question from the array using the current index
+    // krijg het antwoord via de index, deze is niet per se gelijk aan het nummer van de vraag
     var currentQuestion;
     var currentAnswers = [];
 
@@ -159,6 +162,7 @@ function displayQuestionAnswers(jsonArray, currentQuestionIndex) {
         if (element.nr && element.nr == currentQuestionIndex+1){
             if(element.vraag){
                 currentQuestion = element;
+                updateVragenNummers(element.nr)
             }
             if(element.antwoord){
                 currentAnswers.push(element);
@@ -184,6 +188,15 @@ function displayQuestionAnswers(jsonArray, currentQuestionIndex) {
     });
     container.appendChild(answerDiv);
 
+    // put a back button under the answers
+    if (currentQuestion.nr != 1){
+        const backButton = document.createElement('button');
+        backButton.textContent = "terug naar vorige vraag";
+        // neemt voorlaatste element van alle vorige vragen. 
+        backButton.addEventListener('click', () => handleAnswer(jsonArray, currentQuestionIndex, vorigeVragenNummers.slice(0,-1).pop(), 'nee'))
+        container.appendChild(backButton);
+    }
+    
 }
 
 
