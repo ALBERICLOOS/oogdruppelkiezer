@@ -68,6 +68,8 @@ function updateVragenNummers(nummer){
 function klaar(){
     const scores = new Object();
     const naamToElement = new Object();
+    
+    //dict aanmaken en vullen
     kiezer.forEach(element=>{
         scores[element.naam] = 0;
         naamToElement[element.naam] = element;
@@ -76,6 +78,11 @@ function klaar(){
         kiezer.forEach(element =>{
             if(element.hasOwnProperty(selection)){
                 scores[element.naam] += 1
+            }
+            else if (selection == "ampullen"){
+                if(element.verpakking == selection){
+                    scores[element.naam] += 1
+                }
             }
         })
     })
