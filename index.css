@@ -2,10 +2,12 @@
     box-sizing: border-box;
 }
 body{
-    font-family: sans-serif;
+    font-family: system-ui;
     margin: 0;
     padding: 0;
     overflow: hidden;
+    background-image: url(achtergrond3.jpg);
+    background-size: cover;
 }
 
 #container{
@@ -20,6 +22,13 @@ body{
 
 div{
     text-align: center;
+}
+
+#title{
+background: rgb(35,219,164);
+    background: linear-gradient(81deg, #FF4742 0%, rgba(68,68,68,1) 62%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
 h1{
@@ -83,10 +92,23 @@ button:active {
 
 
   
-  .custom-paragraph {
+.custom-paragraph {
     max-width: 400px; /* Set your desired width here */
     width: 100%;
     margin-left: auto;
     margin-right: auto;
   }
-  
+
+  progress{
+    height: 30px;
+    width: 50%
+  }
+
+  span{
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    color: black;
+    font-weight: bold;
+  }

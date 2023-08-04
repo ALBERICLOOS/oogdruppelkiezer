@@ -8,6 +8,10 @@ var kiezer;
 // hou voor elke vraag bij wat de vorige vraag is
 var vorigeVragenNummers = [];
 
+// hou bij hoeveel vragen er in totaal zijn + aan de hoeveelste vraag we nu zitten
+var totaalAantalVragen = 0;
+var huidigeVraagNummer = 0;
+
 // Function to handle the answer and process the next question
 function handleAnswer(jsonArray, currentQuestionIndex, vervolg, antwoord) {
 
@@ -68,12 +72,16 @@ function updateVragenNummers(nummer){
 function klaar(){
     const scores = new Object();
     const naamToElement = new Object();
+
     
     //dict aanmaken en vullen
     kiezer.forEach(element=>{
         scores[element.naam] = 0;
         naamToElement[element.naam] = element;
     })
+
+
+    //TODO aanpassen voor mijn klasse    
     selections.forEach(selection=>{
         kiezer.forEach(element =>{
             if(element.hasOwnProperty(selection)){
@@ -140,6 +148,8 @@ function addTerugNaarStartKnop() {
       answers = [];
       selections = [];
       vorigeVragenNummers = [];
+      huidigeVraagNummer = 0;
+      totaalAantalVragen = 0;
     });
   }
   
@@ -194,16 +204,45 @@ function displayQuestionAnswers(jsonArray, currentQuestionIndex) {
     });
     container.appendChild(answerDiv);
 
+    // update het huidige vraagnummer
+    huidigeVraagNummer += 1;
+
     // put a back button under the answers
     if (currentQuestion.nr != 1){
         const backButton = document.createElement('button');
         backButton.textContent = "terug naar vorige vraag";
+
+        // -2 omdat je eerst + 1 doet en anders heeft het geen effect
+        backButton.addEventListener('click', () => huidigeVraagNummer -= 2)
+
         // neemt voorlaatste element van alle vorige vragen. 
         backButton.addEventListener('click', () => handleAnswer(jsonArray, currentQuestionIndex, vorigeVragenNummers.slice(0,-1).pop(), 'nee'))
         container.appendChild(backButton);
     }
+
+    
+
+    // progressBar
+    const progressContainer = document.createElement('div');
+    progressContainer.style.position = 'fixed';
+    progressContainer.style.width = '100%'
+    progressContainer.style.bottom = '0';
+    progressContainer.style.left = '0';
+    progressContainer.style.padding = '2%';
+
+    const progressBar = document.createElement('progress');
+    progressBar.max = totaalAantalVragen;
+    progressBar.value = huidigeVraagNummer;
+    
+    const progressText = document.createElement('span');
+    progressText.textContent = huidigeVraagNummer + " / " + totaalAantalVragen;
+    
+    progressContainer.appendChild(progressText);
+    progressContainer.appendChild(progressBar);
+    container.appendChild(progressContainer);
     
 }
+
 
 
 // Read the Excel file and display questions and answers when the page is loaded
@@ -229,6 +268,7 @@ startButton.addEventListener("click", () => {
         jsonArray.forEach(element=>{
             if(element.vraag){
                 answers.push('nee');
+                totaalAantalVragen += 1;
             }
         })
         
