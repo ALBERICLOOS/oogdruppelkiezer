@@ -27,6 +27,7 @@ div{
 #title{
 background: rgb(35,219,164);
     background: linear-gradient(81deg, #FF4742 0%, rgba(68,68,68,1) 62%);
+    background-clip: padding-box;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
