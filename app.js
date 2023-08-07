@@ -203,6 +203,8 @@ function displayQuestionAnswers(jsonArray, currentQuestionIndex) {
     
     // put all the answers under the question
     const answerDiv = document.createElement('div');
+    answerDiv.className = 'button-container';
+
     currentAnswers.forEach(answer => {
         const answerButton = document.createElement('button');
         answerButton.textContent = answer.antwoord;
