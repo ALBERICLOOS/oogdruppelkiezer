@@ -55,7 +55,7 @@ function handleAnswer(jsonArray, currentQuestionIndex, vervolg, antwoord) {
         }
     }
     catch(error){ // dit is voor als er iets fout is gelopen.
-        showText("Er is iets foutgelopen, gelieve de pagina te herladen.")
+        showText("Er is iets foutgelopen, gelieve de pagina te herladen.") // HIER ERROR AAN TOEVOEGEN ALS JE ERROR WILT ZIEN
      }
 }
 
@@ -87,9 +87,19 @@ function klaar(){
             if(element.hasOwnProperty(selection)){
                 scores[element.naam] += 1
             }
-            else if (selection == "ampullen"){
-                if(element.verpakking == selection){
-                    scores[element.naam] += 1
+            else if (selection.includes("OF")){
+                var temp_selections = selection.split("OF");
+                if((temp_selections[0].trim() == "ampullen" && element.verpakking == "ampullen") || temp_selections[1].trim() == element.houdbaarheid){
+                    scores[element.naam] += 1;
+                }
+            }
+            else if (selection.includes("mijn klasse: bevat ")){
+                var klasseNr = selection.replace("mijn klasse: bevat ", "");
+                if(element.hasOwnProperty("mijnKlasse")){
+                    var klasseLijst = element.mijnKlasse.toString().split(";");
+                    if(klasseLijst.includes(klasseNr.toString())){
+                        scores[element.naam] += 1;
+                    }
                 }
             }
         })
