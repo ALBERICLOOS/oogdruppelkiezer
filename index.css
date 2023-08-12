@@ -37,6 +37,7 @@ h1{
     max-width: 100%;
 }
 @media only screen and (max-width: 600px) {
+    /* zorgen dat je de tekst ook kan lezen op een klein scherm */
     h1{
         font-size: 30px;
     }
