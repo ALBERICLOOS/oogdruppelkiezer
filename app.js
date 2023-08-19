@@ -137,6 +137,10 @@ function klaar(){
         const ulInhoud = document.createElement('div');
         ulInhoud.textContent = "Inhoud: " + naamToElement[name].inhoud;
         infoList.append(ulInhoud);
+        
+        const extraLijn = document.createElement('div');
+        extraLijn.style.marginTop = '5%';
+        infoList.append(extraLijn);
 
         container.appendChild(infoList);
         }
