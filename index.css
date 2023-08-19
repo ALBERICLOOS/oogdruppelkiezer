@@ -5,7 +5,8 @@ body{
     font-family: system-ui;
     margin: 0;
     padding: 0;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
     background-image: url(achtergrond3.jpg);
     background-size: cover;
 }
